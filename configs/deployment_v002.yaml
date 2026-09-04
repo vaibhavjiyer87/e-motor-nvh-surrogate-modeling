@@ -1,0 +1,26 @@
+specification_id: P02-DEPLOY-001
+version: v002
+status: FROZEN
+created: '2026-09-01'
+goal: Deploy the final selected model through a standalone user-facing Python application.
+python_installation_allowed: true
+free_open_source_python_dependencies_allowed: true
+paid_runtime_license_allowed: false
+commercial_cae_runtime_required: false
+matlab_runtime_required: false
+application_must:
+- accept engineering input inside the application
+- validate the input
+- perform frozen preprocessing internally
+- load and run the selected model internally
+- perform postprocessing internally
+- display predictions inside the application
+- display useful engineering plots where appropriate
+- allow output export
+exact_gui_framework: UNFROZEN
+exact_model_runtime: UNFROZEN
+final_validation_required:
+- research-versus-application prediction parity
+- fresh Python environment test
+- documented installation procedure
+- no paid software required

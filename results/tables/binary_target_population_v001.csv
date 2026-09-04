@@ -1,0 +1,5 @@
+domain,binary_target,row_count
+measured,FAULT,313668
+measured,HEALTHY,17410
+simulated,FAULT,1308894
+simulated,HEALTHY,72700

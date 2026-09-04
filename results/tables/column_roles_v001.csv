@@ -1,0 +1,12 @@
+column,role,frozen,reason
+Currents_Sub1[1].rms,BASE_PREDICTOR,True,Available with identical semantic schema in simulated and measured compact domains.
+Currents_Sub1[2].rms,BASE_PREDICTOR,True,Available with identical semantic schema in simulated and measured compact domains.
+Currents_Sub1[3].rms,BASE_PREDICTOR,True,Available with identical semantic schema in simulated and measured compact domains.
+Currents_Sub2[1].rms,BASE_PREDICTOR,True,Available with identical semantic schema in simulated and measured compact domains.
+Currents_Sub2[2].rms,BASE_PREDICTOR,True,Available with identical semantic schema in simulated and measured compact domains.
+Currents_Sub2[3].rms,BASE_PREDICTOR,True,Available with identical semantic schema in simulated and measured compact domains.
+Speed_mech,BASE_PREDICTOR,True,Available with identical semantic schema in simulated and measured compact domains.
+FaultCode,TARGET_SOURCE,True,Source for hierarchical diagnostic labels.
+Load,OPERATING_METADATA,True,Retained for stratification and robustness evaluation; excluded from base predictor space.
+SpeedRef,OPERATING_METADATA,True,Control/setpoint metadata; retained for operating-condition grouping rather than base prediction.
+Window,PREPROCESSING_METADATA,True,Speed-dependent RMS preprocessing metadata; not treated as an independent predictor.

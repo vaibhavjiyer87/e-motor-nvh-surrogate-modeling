@@ -1,0 +1,4 @@
+source_id,title,doi,type,approx_size,planned_role,license_status,audit_status
+SRC-001,Simulation-Based Diagnosis Method for Dual Three-Phase E-Motor,10.5281/zenodo.14026570,public simulated data + code + preprocessed measured data,16.0 GB,simulated-domain source,VERIFY,PENDING
+SRC-002,Measurement of interturn short-circuits emulation on dual three-phase PMS motor,10.5281/zenodo.13889418,public experimental PMSM measurements,1.3 GB,real-domain source,VERIFY,PENDING
+REF-001,Simulation-Based Diagnosis for Cyber-Physical Systems - A General Approach and Case Study on a Dual Three-Phase E-Machine,10.4230/OASIcs.DX.2024.18,open-access reference publication,,methodology and dataset interpretation,CC BY 4.0,ACTIVE

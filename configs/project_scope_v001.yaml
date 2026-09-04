@@ -1,0 +1,33 @@
+specification_id: P02-PROJECT-SCOPE-001
+version: v001
+status: FROZEN
+created: '2026-09-01'
+project_id: P02
+project_name: Sim-to-Real PMSM Fault Diagnosis from Dynamic Signals
+engineering_question: Can models trained primarily on publicly available simulated
+  dual three-phase PMSM signals detect inter-turn short-circuit faults and identify
+  the affected phase in real measured motor data, and do learned temporal representations
+  generalize across the simulation-to-real domain gap better than conventional engineered-feature
+  models?
+primary_domain: electric-machine condition monitoring
+ev_relevance: Dual three-phase permanent-magnet synchronous electric drive
+fault_family: inter-turn short circuit (ITSC)
+core_learning_problem: simulation-to-real fault diagnosis
+core_data_policy: Use existing public simulated and measured datasets. Do not generate
+  a new simulation dataset for the core project.
+not_in_core_scope:
+- generation of new electromagnetic simulations
+- generation of new structural simulations
+- FMU-based training-data generation
+- proprietary or employer-derived data
+- NVH acoustic response prediction
+important_unfrozen_items:
+- exact predictor channels
+- window duration
+- window overlap
+- feature definition
+- exact classification formulation
+- train-validation-test split
+- primary metric
+- conventional model family
+- deep-learning architecture

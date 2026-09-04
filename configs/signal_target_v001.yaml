@@ -1,0 +1,92 @@
+specification_id: P02-SIGNAL-TARGET-001
+version: v001
+status: FROZEN
+frozen_after_step: P02-01.5
+core_data_representation: compact_speed_adaptive_current_RMS
+base_predictors:
+- Currents_Sub1[1].rms
+- Currents_Sub1[2].rms
+- Currents_Sub1[3].rms
+- Currents_Sub2[1].rms
+- Currents_Sub2[2].rms
+- Currents_Sub2[3].rms
+- Speed_mech
+target_source: FaultCode
+operating_metadata:
+- Load
+- SpeedRef
+- Window
+target_policy:
+  primary_diagnostic_formulation: hierarchical
+  stage_a:
+    task: binary_fault_detection
+    classes:
+    - HEALTHY
+    - FAULT
+    source: FaultCode
+  stage_b:
+    task: fault_location_group_identification
+    classes:
+    - FAULT_GROUP_1
+    - FAULT_GROUP_2
+    - FAULT_GROUP_3
+    applies_when: Stage A = FAULT
+    physical_phase_name_mapping: UNRESOLVED_PENDING_SOURCE_CODE_VERIFICATION
+  severity:
+    source: FaultCode ones digit
+    values:
+    - 1
+    - 2
+    - 3
+    - 4
+    - 5
+    - 6
+    role: evaluation_and_stratification_metadata
+    core_prediction_target: false
+physics_guided_feature_families:
+  subsystem_phase_rms_imbalance:
+    status: APPROVED_FOR_FEAT_001
+    rationale: Inter-turn faults may disturb three-phase current-magnitude balance
+      within a subsystem.
+  subsystem_mean_rms:
+    status: APPROVED_FOR_FEAT_001
+    rationale: Separates overall current/load level from relative phase imbalance.
+  cross_subsystem_phase_difference:
+    status: APPROVED_FOR_FEAT_001
+    rationale: Dual three-phase topology provides a natural corresponding-phase differential
+      reference.
+  cross_subsystem_phase_ratio:
+    status: APPROVED_FOR_FEAT_001
+    rationale: Corresponding subsystem symmetry can be expressed independently of
+      absolute current magnitude.
+not_reconstructable_from_compact_rms:
+- Clarke_alpha_beta
+- Park_dq_from_instantaneous_phase_currents
+- symmetrical_component_phasors
+- phase_angle_features
+- current_harmonic_features
+- electrical_order_spectrum_features
+domain_policy:
+  measured_domain: real_system_domain
+  simulated_domain: simulation_domain
+  known_audit_observation: Global current-RMS aggregate statistics are similar, while
+    Speed_mech distributions differ substantially.
+  important_warning: Aggregate similarity does not prove condition-wise sim-to-real
+    equivalence.
+  normalization_rule: Any learned normalization parameters must be fitted using training
+    data only.
+  speed_handling_rule: Operating-speed coverage and balance must be handled explicitly
+    in SPLIT-001 and evaluation.
+  measured_test_protection: Exact train/validation/test roles remain unfrozen until
+    SPLIT-001; after split freeze, protected measured-test labels must not be used
+    for model tuning.
+still_unfrozen:
+- exact physics-guided feature formulas
+- final conventional feature set
+- normalization parameters
+- train/validation/test split
+- metrics
+- conventional model families
+- deep-learning model families
+- model hyperparameters
+- deployment model format

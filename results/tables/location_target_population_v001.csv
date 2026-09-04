@@ -1,0 +1,9 @@
+domain,location_target,row_count
+measured,FAULT_GROUP_1,104556
+measured,FAULT_GROUP_2,104556
+measured,FAULT_GROUP_3,104556
+measured,HEALTHY,17410
+simulated,FAULT_GROUP_1,436298
+simulated,FAULT_GROUP_2,436298
+simulated,FAULT_GROUP_3,436298
+simulated,HEALTHY,72700

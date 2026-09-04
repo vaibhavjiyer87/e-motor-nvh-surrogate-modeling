@@ -216,3 +216,51 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# P02 managed exclusions
+# ========================================================
+# P02 — NVH AI/ML/DL portfolio
+# Large/public data remain in Google Drive, never Git.
+# ========================================================
+# Python
+*.py[cod]
+.ipynb_checkpoints/
+# Environments / IDE
+.venv/
+.vscode/
+.idea/
+# OS files
+.DS_Store
+Thumbs.db
+# Secrets / credentials
+*token*
+*.pem
+*.key
+credentials*.json
+# Raw / intermediate / processed datasets
+data/raw/
+data/interim/
+data/processed/
+data/manifests/
+data/splits/
+# Large public/scientific data formats
+*.pickle
+*.pkl
+*.mat
+*.wav
+*.flac
+*.h5
+*.hdf5
+*.npy
+*.npz
+# Model checkpoints / binary exports
+models/checkpoints/
+*.pt
+*.pth
+*.ckpt
+*.onnx
+*.joblib
+# Runtime caches / temporary files
+cache/
+tmp/
+*.tmp

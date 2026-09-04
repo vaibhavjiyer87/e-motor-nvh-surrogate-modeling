@@ -1,0 +1,18 @@
+specification_id: P02-DATA-POLICY-001
+version: v001
+status: FROZEN
+created: '2026-09-01'
+allowed:
+- publicly available measured datasets
+- publicly available simulated datasets
+- publicly documented dataset metadata
+- public research publications
+prohibited:
+- employer simulation data
+- employer measured data
+- proprietary motor parameters
+- confidential or sanitized employer-derived data
+- remembered production values
+new_simulation_generation_required: false
+redistribution_rule: Raw public dataset files must not be committed to GitHub until
+  their redistribution terms have been verified.
