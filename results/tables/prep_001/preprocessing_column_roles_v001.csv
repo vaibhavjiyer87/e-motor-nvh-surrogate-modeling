@@ -1,0 +1,12 @@
+column,source_role,canonical_dtype,scaled_for_tree_models,scaled_for_scale_sensitive_models,available_to_model
+Currents_Sub1[1].rms,BASE_PREDICTOR,float32,False,True,True
+Currents_Sub1[2].rms,BASE_PREDICTOR,float32,False,True,True
+Currents_Sub1[3].rms,BASE_PREDICTOR,float32,False,True,True
+Currents_Sub2[1].rms,BASE_PREDICTOR,float32,False,True,True
+Currents_Sub2[2].rms,BASE_PREDICTOR,float32,False,True,True
+Currents_Sub2[3].rms,BASE_PREDICTOR,float32,False,True,True
+Speed_mech,BASE_PREDICTOR,float32,False,True,True
+FaultCode,TARGET_SOURCE,int16,False,False,False
+Load,OPERATING_METADATA,int16,False,False,False
+SpeedRef,OPERATING_METADATA,int16,False,False,False
+Window,PREPROCESSING_METADATA,int16,False,False,False

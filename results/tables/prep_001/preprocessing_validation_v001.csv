@@ -1,0 +1,3 @@
+domain,row_count,column_count,missing_value_count,nonfinite_predictor_count,faultcode_count,load_count,speed_mech_min,speed_mech_max,speedref_min,speedref_max,window_min,window_max,automatic_deduplication
+simulated,1381594,11,0,0,19,8,457.331035774064,4999.13989250683,500,5000,72,720,False
+measured,331078,11,0,0,19,8,451.8173633842878,4470.617610514962,500,4500,80,720,False

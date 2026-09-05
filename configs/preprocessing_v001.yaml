@@ -1,0 +1,141 @@
+specification_id: P02-PREP-001
+version: v001
+status: FROZEN
+source_representation: compact_speed_adaptive_current_RMS
+modeling_representation:
+  mode: tabular_row
+  row_order_interpreted_as_time: false
+  sequence_modeling_enabled: false
+  reason: Compact public data contain repeated RMS observations but no explicit time,
+    sample-index, or sequence-index variable. Row order therefore must not be treated
+    as temporal evidence.
+  grouping_metadata_preserved_for_split:
+  - source_domain
+  - FaultCode
+  - Load
+  - SpeedRef
+base_predictors:
+- Currents_Sub1[1].rms
+- Currents_Sub1[2].rms
+- Currents_Sub1[3].rms
+- Currents_Sub2[1].rms
+- Currents_Sub2[2].rms
+- Currents_Sub2[3].rms
+- Speed_mech
+target_source: FaultCode
+operating_metadata:
+- Load
+- SpeedRef
+- Window
+canonical_dtypes:
+  Currents_Sub1[1].rms: float32
+  Currents_Sub1[2].rms: float32
+  Currents_Sub1[3].rms: float32
+  Currents_Sub2[1].rms: float32
+  Currents_Sub2[2].rms: float32
+  Currents_Sub2[3].rms: float32
+  Speed_mech: float32
+  FaultCode: int16
+  Load: int16
+  SpeedRef: int16
+  Window: int16
+validity_policy:
+  missing_values: FAIL_FAST
+  nonfinite_predictors: FAIL_FAST
+  invalid_fault_code: FAIL_FAST
+  non_integer_metadata: FAIL_FAST
+  automatic_row_drop: false
+  automatic_deduplication: false
+  outlier_clipping: false
+  winsorization: false
+target_decoding:
+  stage_a:
+    healthy:
+    - 0
+    fault:
+    - 11
+    - 12
+    - 13
+    - 14
+    - 15
+    - 16
+    - 21
+    - 22
+    - 23
+    - 24
+    - 25
+    - 26
+    - 31
+    - 32
+    - 33
+    - 34
+    - 35
+    - 36
+  stage_b:
+    FAULT_GROUP_1:
+    - 11
+    - 12
+    - 13
+    - 14
+    - 15
+    - 16
+    FAULT_GROUP_2:
+    - 21
+    - 22
+    - 23
+    - 24
+    - 25
+    - 26
+    FAULT_GROUP_3:
+    - 31
+    - 32
+    - 33
+    - 34
+    - 35
+    - 36
+  severity_source: FaultCode ones digit
+  severity_role: evaluation_and_stratification_metadata
+  physical_phase_names: UNRESOLVED
+scaling_policy:
+  tree_based_models: NO_SCALING
+  scale_sensitive_models: STANDARD_SCALER
+  scaler_fit_scope: TRAIN_ONLY
+  validation_application: APPLY_TRAIN_FITTED_SCALER
+  test_application: APPLY_TRAIN_FITTED_SCALER
+  domain_specific_scalers: false
+  measured_test_statistics_used_for_fit: false
+  scaler_fitted_during_PREP_001: false
+physics_guided_features:
+  calculation_stage: FEAT-001
+  calculated_from: UNSCALED_RMS_VALUES
+  approved_families:
+  - subsystem_phase_rms_imbalance
+  - subsystem_mean_rms
+  - cross_subsystem_phase_difference
+  - cross_subsystem_phase_ratio
+  exact_formulas_frozen: false
+operating_condition_policy:
+  Load: METADATA_ONLY
+  SpeedRef: METADATA_ONLY
+  Window: PREPROCESSING_METADATA_ONLY
+  Speed_mech: BASE_PREDICTOR
+  common_speed_support_filter: DEFER_TO_SPLIT-001
+  automatic_speed_clipping: false
+class_balance_policy:
+  resampling_during_preprocessing: false
+  class_weights_during_preprocessing: false
+  handling: DEFER_TO_MODELING_AFTER_SPLIT
+source_integrity_policy:
+  modify_public_source_pickles: false
+  source_data_are_read_only: true
+  preserve_source_row_ordinal: true
+  source_row_ordinal_is_time: false
+still_unfrozen:
+- train_validation_test_split
+- exact_physics_feature_formulas
+- final_engineered_feature_set
+- fitted_scaler_parameters
+- evaluation_metrics
+- model_families
+- deep_learning_hypothesis
+- model_hyperparameters
