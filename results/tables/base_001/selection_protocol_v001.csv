@@ -1,0 +1,3 @@
+stage,partition,primary,tiebreak_1,tiebreak_2,tiebreak_3,tiebreak_4,dummy_eligible
+STAGE_A,SIM_VALIDATION,macro_f1,balanced_accuracy,mcc,fewer_predictors,simpler_model_family,False
+STAGE_B,SIM_VALIDATION_TRUE_FAULT_ONLY,macro_f1,balanced_accuracy,fewer_predictors,simpler_model_family,lexical_model_id,False

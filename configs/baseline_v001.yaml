@@ -1,0 +1,200 @@
+specification_id: P02-BASE-001
+version: v001
+status: FROZEN
+random_seed: 20260906
+evaluation_unit:
+  group_columns:
+  - FaultCode
+  - Load
+  - SpeedRef
+  meaning: FaultCode x Load x SpeedRef
+  row_predictions_aggregated_by: mean_class_probability
+  group_prediction: argmax_mean_probability
+  row_level_accuracy_primary: false
+stage_a:
+  task: HEALTHY_vs_FAULT
+  labels:
+  - HEALTHY
+  - FAULT
+  training_population: SIM_TRAIN_ALL
+  validation_population: SIM_VALIDATION_ALL
+  primary_metric: group_macro_f1
+  secondary_metrics:
+  - group_balanced_accuracy
+  - group_mcc
+  - per_class_precision
+  - per_class_recall
+  - per_class_f1
+  - confusion_matrix
+  - group_auroc_diagnostic
+  decision_policy: argmax_probability
+  binary_equivalent_threshold: 0.5
+  threshold_tuning: false
+stage_b:
+  task: FAULT_LOCATION_GROUP
+  labels:
+  - FAULT_GROUP_1
+  - FAULT_GROUP_2
+  - FAULT_GROUP_3
+  training_population: SIM_TRAIN_TRUE_FAULT_ONLY
+  validation_population: SIM_VALIDATION_TRUE_FAULT_ONLY
+  primary_metric: group_macro_f1
+  secondary_metrics:
+  - group_balanced_accuracy
+  - per_class_precision
+  - per_class_recall
+  - per_class_f1
+  - confusion_matrix
+  decision_policy: argmax_probability
+  threshold_tuning: false
+hierarchical_system:
+  labels:
+  - HEALTHY
+  - FAULT_GROUP_1
+  - FAULT_GROUP_2
+  - FAULT_GROUP_3
+  primary_reporting_metric: group_macro_f1_4class
+  secondary_reporting:
+  - group_balanced_accuracy_4class
+  - per_class_metrics
+  - confusion_matrix_4class
+  used_to_override_stage_model_selection: false
+representations:
+  RAW_7:
+  - Currents_Sub1[1].rms
+  - Currents_Sub1[2].rms
+  - Currents_Sub1[3].rms
+  - Currents_Sub2[1].rms
+  - Currents_Sub2[2].rms
+  - Currents_Sub2[3].rms
+  - Speed_mech
+  ENGINEERED_14:
+  - sub1_mean_rms
+  - sub2_mean_rms
+  - sub1_phase_imbalance
+  - sub2_phase_imbalance
+  - cross_phase1_signed_diff_rms
+  - cross_phase2_signed_diff_rms
+  - cross_phase3_signed_diff_rms
+  - cross_phase1_abs_diff_rms
+  - cross_phase2_abs_diff_rms
+  - cross_phase3_abs_diff_rms
+  - cross_phase1_log_ratio
+  - cross_phase2_log_ratio
+  - cross_phase3_log_ratio
+  - Speed_mech
+  COMBINED_20:
+  - Currents_Sub1[1].rms
+  - Currents_Sub1[2].rms
+  - Currents_Sub1[3].rms
+  - Currents_Sub2[1].rms
+  - Currents_Sub2[2].rms
+  - Currents_Sub2[3].rms
+  - Speed_mech
+  - sub1_mean_rms
+  - sub2_mean_rms
+  - sub1_phase_imbalance
+  - sub2_phase_imbalance
+  - cross_phase1_signed_diff_rms
+  - cross_phase2_signed_diff_rms
+  - cross_phase3_signed_diff_rms
+  - cross_phase1_abs_diff_rms
+  - cross_phase2_abs_diff_rms
+  - cross_phase3_abs_diff_rms
+  - cross_phase1_log_ratio
+  - cross_phase2_log_ratio
+  - cross_phase3_log_ratio
+baseline_models:
+  dummy_prior:
+    class: sklearn.dummy.DummyClassifier
+    strategy: prior
+    purpose: sanity_floor
+    eligible_for_model_selection: false
+  logistic_regression:
+    class: sklearn.linear_model.LogisticRegression
+    C: 1.0
+    solver: lbfgs
+    max_iter: 1000
+    scaler: StandardScaler
+    scaler_fit_partition: SIM_TRAIN
+    hyperparameter_search: false
+  hist_gradient_boosting:
+    class: sklearn.ensemble.HistGradientBoostingClassifier
+    learning_rate: 0.08
+    max_iter: 250
+    max_leaf_nodes: 31
+    l2_regularization: 1.0
+    early_stopping: false
+    scaling: false
+    hyperparameter_search: false
+class_imbalance:
+  oversampling: false
+  undersampling: false
+  sample_weighting: true
+  group_weight: 1 / rows_in_FaultCode_Load_SpeedRef_group
+  class_balance_factor: N_groups_total / (K * N_groups_in_class)
+  normalization: mean_training_sample_weight_equals_1
+  weights_calculated_from: ACTIVE_SIM_TRAIN_TRAINING_POPULATION_ONLY
+scaling:
+  logistic_regression: StandardScaler
+  hist_gradient_boosting: NONE
+  scaler_fit_partition: SIM_TRAIN_ONLY
+  validation_statistics_used: false
+  measured_statistics_used: false
+  domain_specific_scalers: false
+selection_policy:
+  stage_a:
+  - macro_f1_desc
+  - balanced_accuracy_desc
+  - mcc_desc
+  - predictor_count_asc
+  - model_family_complexity_asc
+  - model_id_lexical
+  stage_b:
+  - macro_f1_desc
+  - balanced_accuracy_desc
+  - predictor_count_asc
+  - model_family_complexity_asc
+  - model_id_lexical
+  model_family_complexity_order:
+  - LOGISTIC_REGRESSION
+  - HIST_GRADIENT_BOOSTING
+  measured_test_used_for_selection: false
+  auxiliary_unseen_speed_used_for_selection: false
+bootstrap_reporting:
+  enabled: true
+  resampling_unit:
+  - Load
+  - SpeedRef
+  meaning: Load x SpeedRef operating condition
+  replicates: 1000
+  confidence_level: 0.95
+  method: percentile
+  seed: 20260906
+  used_for_model_selection: false
+protected_test_policy:
+  measured_external_test: SEALED_UNTIL_PRIMARY_MODEL_SELECTION_LOCKED
+  measured_used_for_scaling: false
+  measured_used_for_threshold_tuning: false
+  measured_used_for_hyperparameter_tuning: false
+  auxiliary_unseen_speed: SEALED_UNTIL_PRIMARY_MODEL_SELECTION_LOCKED
+persistence_policy:
+  experiment_granularity: one_stage_model_representation_fit
+  persist_immediately_after_each_completed_fit: true
+  model_artifact_format: joblib
+  metrics_persisted: true
+  group_predictions_persisted: true
+  configuration_fingerprint_required: true
+  completed_matching_experiment_skipped_on_restart: true
+  temporary_write_then_atomic_replace: true
+  registry_required_before_first_training_fit: true
+first_pass_hyperparameter_search: false
+training_started: false
+still_unfrozen:
+- fitted_scaler_parameters
+- baseline_experiment_registry
+- final_selected_stage_a_model
+- final_selected_stage_b_model
+- external_test_final_refit_policy
+- deep_learning_hypothesis
+- deep_learning_architecture
