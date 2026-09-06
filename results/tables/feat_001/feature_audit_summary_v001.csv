@@ -1,0 +1,7 @@
+audit_item,value,decision
+derived_feature_count,13,ACCEPT
+near_redundant_pairs_abs_pearson_ge_0_995,1,RETAIN_ALL_FEATURES
+measured_distribution_used_for_selection,False,PROHIBITED
+measured_target_association_used_for_selection,False,PROHIBITED
+feature_scaling_before_derivation,False,DERIVE_FROM_UNSCALED_RMS
+supervised_feature_pruning_before_baseline,False,PROHIBITED

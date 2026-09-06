@@ -1,0 +1,14 @@
+feature,family,formula,units,signed
+sub1_mean_rms,subsystem_mean_rms,(S1P1 + S1P2 + S1P3) / 3,A_RMS,False
+sub2_mean_rms,subsystem_mean_rms,(S2P1 + S2P2 + S2P3) / 3,A_RMS,False
+sub1_phase_imbalance,phase_rms_imbalance,"max(abs(S1Pi - mean_S1)) / max(mean_S1, epsilon)",dimensionless,False
+sub2_phase_imbalance,phase_rms_imbalance,"max(abs(S2Pi - mean_S2)) / max(mean_S2, epsilon)",dimensionless,False
+cross_phase1_signed_diff_rms,cross_subsystem_phase_difference,S1P1 - S2P1,A_RMS,True
+cross_phase2_signed_diff_rms,cross_subsystem_phase_difference,S1P2 - S2P2,A_RMS,True
+cross_phase3_signed_diff_rms,cross_subsystem_phase_difference,S1P3 - S2P3,A_RMS,True
+cross_phase1_abs_diff_rms,cross_subsystem_phase_difference,abs(S1P1 - S2P1),A_RMS,False
+cross_phase2_abs_diff_rms,cross_subsystem_phase_difference,abs(S1P2 - S2P2),A_RMS,False
+cross_phase3_abs_diff_rms,cross_subsystem_phase_difference,abs(S1P3 - S2P3),A_RMS,False
+cross_phase1_log_ratio,cross_subsystem_phase_ratio,ln((S1P1+epsilon)/(S2P1+epsilon)),dimensionless,True
+cross_phase2_log_ratio,cross_subsystem_phase_ratio,ln((S1P2+epsilon)/(S2P2+epsilon)),dimensionless,True
+cross_phase3_log_ratio,cross_subsystem_phase_ratio,ln((S1P3+epsilon)/(S2P3+epsilon)),dimensionless,True

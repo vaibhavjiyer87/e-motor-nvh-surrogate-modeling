@@ -1,0 +1,121 @@
+specification_id: P02-FEAT-001
+version: v001
+status: FROZEN
+input_policy:
+  derive_from: UNSCALED_RMS_VALUES
+  current_source_columns:
+  - Currents_Sub1[1].rms
+  - Currents_Sub1[2].rms
+  - Currents_Sub1[3].rms
+  - Currents_Sub2[1].rms
+  - Currents_Sub2[2].rms
+  - Currents_Sub2[3].rms
+  speed_context_predictor: Speed_mech
+  measured_external_test_used_for_feature_selection: false
+numerical_policy:
+  epsilon_ampere: 1.0e-06
+  epsilon_role: fixed_numerical_safeguard
+  epsilon_fitted_from_data: false
+  nonfinite_output: FAIL_FAST
+derived_features:
+  count: 13
+  names:
+  - sub1_mean_rms
+  - sub2_mean_rms
+  - sub1_phase_imbalance
+  - sub2_phase_imbalance
+  - cross_phase1_signed_diff_rms
+  - cross_phase2_signed_diff_rms
+  - cross_phase3_signed_diff_rms
+  - cross_phase1_abs_diff_rms
+  - cross_phase2_abs_diff_rms
+  - cross_phase3_abs_diff_rms
+  - cross_phase1_log_ratio
+  - cross_phase2_log_ratio
+  - cross_phase3_log_ratio
+  families:
+  - subsystem_mean_rms
+  - phase_rms_imbalance
+  - cross_subsystem_phase_difference
+  - cross_subsystem_phase_ratio
+representations:
+  RAW_7:
+  - Currents_Sub1[1].rms
+  - Currents_Sub1[2].rms
+  - Currents_Sub1[3].rms
+  - Currents_Sub2[1].rms
+  - Currents_Sub2[2].rms
+  - Currents_Sub2[3].rms
+  - Speed_mech
+  ENGINEERED_14:
+  - sub1_mean_rms
+  - sub2_mean_rms
+  - sub1_phase_imbalance
+  - sub2_phase_imbalance
+  - cross_phase1_signed_diff_rms
+  - cross_phase2_signed_diff_rms
+  - cross_phase3_signed_diff_rms
+  - cross_phase1_abs_diff_rms
+  - cross_phase2_abs_diff_rms
+  - cross_phase3_abs_diff_rms
+  - cross_phase1_log_ratio
+  - cross_phase2_log_ratio
+  - cross_phase3_log_ratio
+  - Speed_mech
+  COMBINED_20:
+  - Currents_Sub1[1].rms
+  - Currents_Sub1[2].rms
+  - Currents_Sub1[3].rms
+  - Currents_Sub2[1].rms
+  - Currents_Sub2[2].rms
+  - Currents_Sub2[3].rms
+  - Speed_mech
+  - sub1_mean_rms
+  - sub2_mean_rms
+  - sub1_phase_imbalance
+  - sub2_phase_imbalance
+  - cross_phase1_signed_diff_rms
+  - cross_phase2_signed_diff_rms
+  - cross_phase3_signed_diff_rms
+  - cross_phase1_abs_diff_rms
+  - cross_phase2_abs_diff_rms
+  - cross_phase3_abs_diff_rms
+  - cross_phase1_log_ratio
+  - cross_phase2_log_ratio
+  - cross_phase3_log_ratio
+representation_role:
+  RAW_7: raw frozen predictor baseline
+  ENGINEERED_14: physics-guided engineered representation
+  COMBINED_20: raw plus physics-guided representation
+imbalance_definition:
+  formula: max(abs(I_phase - mean_phase)) / max(mean_phase, epsilon)
+  standards_claim: false
+  interpretation: engineering phase-RMS imbalance index
+cross_subsystem_difference_policy:
+  signed_difference: true
+  absolute_difference: true
+cross_subsystem_ratio_policy:
+  representation: natural_log_ratio
+  formula: ln((I_sub1 + epsilon)/(I_sub2 + epsilon))
+  zero_meaning: matched corresponding-phase RMS
+  sign_preserved: true
+scaling_policy:
+  feature_calculation_before_scaling: true
+  scaler_fit_partition: SIM_TRAIN
+  validation_uses_train_fitted_scaler: true
+  measured_test_uses_train_fitted_scaler: true
+  domain_specific_scalers: false
+feature_selection_policy:
+  supervised_pruning_before_baseline: false
+  measured_test_used_for_pruning: false
+  all_13_derived_features_retained: true
+  train_only_redundancy_audit_pair_count: 1
+implementation_repair: FEAT-001B1-R
+still_unfrozen:
+- evaluation_metrics
+- class_imbalance_treatment
+- baseline_model_families
+- baseline_hyperparameters
+- fitted_scaler_parameters
+- deep_learning_hypothesis
+- deep_learning_architecture
