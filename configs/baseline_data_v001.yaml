@@ -1,0 +1,81 @@
+specification_id: P02-BASE-DATA-001
+version: v001
+status: FROZEN
+parent_baseline_specification: P02-BASE-001 v001
+source_domain: SIMULATED_ONLY
+measured_external_test_loaded: false
+measured_external_test_materialized: false
+canonical_matrix:
+  representation: COMBINED_20
+  dtype: float32
+  rows: 1381594
+  columns: 20
+  path: data/processed/base_002/combined20_sim_v001.npy
+  sha256: e4211e780683f5064d217443b89e8e429ee4fc7c98560de937a2d6233c211664
+representation_indices:
+  RAW_7:
+  - 0
+  - 1
+  - 2
+  - 3
+  - 4
+  - 5
+  - 6
+  ENGINEERED_14:
+  - 7
+  - 8
+  - 9
+  - 10
+  - 11
+  - 12
+  - 13
+  - 14
+  - 15
+  - 16
+  - 17
+  - 18
+  - 19
+  - 6
+  COMBINED_20:
+  - 0
+  - 1
+  - 2
+  - 3
+  - 4
+  - 5
+  - 6
+  - 7
+  - 8
+  - 9
+  - 10
+  - 11
+  - 12
+  - 13
+  - 14
+  - 15
+  - 16
+  - 17
+  - 18
+  - 19
+row_index_artifacts:
+  sim_train: data/processed/base_002/sim_train_row_indices_v001.npy
+  sim_validation: data/processed/base_002/sim_validation_row_indices_v001.npy
+  stage_b_train: data/processed/base_002/stage_b_train_row_indices_v001.npy
+  stage_b_validation: data/processed/base_002/stage_b_validation_row_indices_v001.npy
+weight_artifacts:
+  stage_a_train: data/processed/base_002/stage_a_train_weights_v001.npy
+  stage_b_train: data/processed/base_002/stage_b_train_weights_v001.npy
+  weight_mean: 1.0
+  computed_from: SIM_TRAIN_ONLY
+scalers:
+  fit_partition: SIM_TRAIN_ONLY
+  weighted_scaling: false
+  RAW_7: models/baseline_preprocessing/standard_scaler_raw7_v001.joblib
+  ENGINEERED_14: models/baseline_preprocessing/standard_scaler_engineered14_v001.joblib
+  COMBINED_20: models/baseline_preprocessing/standard_scaler_combined20_v001.joblib
+registry:
+  live_registry: project_admin/baseline_experiment_registry_v001.csv
+  experiment_count: 14
+  initial_status: PENDING
+  completed_experiments_must_not_be_overwritten: true
+training_started: false

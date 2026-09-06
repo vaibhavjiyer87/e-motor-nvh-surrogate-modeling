@@ -1,0 +1,6 @@
+artifact_role,rows,columns,partition,measured_data
+canonical_feature_matrix,1381594,20,ALL_SIMULATED,False
+stage_a_train,1111135,20,SIM_TRAIN,False
+stage_a_validation,270459,20,SIM_VALIDATION,False
+stage_b_train_fault_only,1052667,20,SIM_TRAIN,False
+stage_b_validation_fault_only,256227,20,SIM_VALIDATION,False
