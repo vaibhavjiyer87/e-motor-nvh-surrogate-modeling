@@ -1,0 +1,91 @@
+specification_id: P02-SPLIT-001
+version: v001
+status: FROZEN
+source_data:
+  simulated_sha256: af67d91322cca52d82e5e975997f0e6b7ae8b2dfe2f68c25e053c2c1df20bd08
+  measured_sha256: 594efaa30f659d5f47b1f09069ad66096b84a8ad1d65fcffab33d8d9b003d457
+rejected_designs:
+  candidate_a_fault_condition_random:
+    status: REJECTED
+    exact_operating_condition_overlap: 357
+    total_simulated_operating_conditions: 368
+    reason: 357 of 368 Load x SpeedRef conditions appear in both train and validation,
+      making operating-condition generalization overly permissive.
+primary_protocol:
+  development_domain: SIMULATED_ONLY
+  grouping_unit:
+  - Load
+  - SpeedRef
+  grouping_meaning: whole operating condition
+  assignment_algorithm: load_stratified_deterministic_condition_holdout
+  seed: 20260906
+  target_validation_fraction: 0.2
+  train_partition: SIM_TRAIN
+  validation_partition: SIM_VALIDATION
+  train_conditions: 296
+  validation_conditions: 72
+  exact_condition_overlap: 0
+  train_rows: 1111135
+  validation_rows: 270459
+  actual_validation_row_fraction: 0.19575866716271206
+  all_faultcodes_follow_condition_partition: true
+  assignment_artifact: results/tables/split_001/primary_sim_condition_assignment_v001.csv
+  assignment_sha256: 2eedd0079ddf80544a6831b13753f20ef1173b0ef2ac9ca6e7b2f2b017c9508a
+measured_external_test:
+  partition: MEASURED_EXTERNAL_TEST
+  all_measured_rows: true
+  rows: 331078
+  operating_conditions: 321
+  outside_simulation_support: 0
+  protected: true
+  prohibited_uses:
+  - scaler_fitting
+  - feature_fitting
+  - model_training
+  - hyperparameter_tuning
+  - threshold_tuning
+  - early_stopping
+  - model_selection
+  allowed_use: final_zero_shot_sim_to_real_evaluation
+  condition_assignment_artifact: results/tables/split_001/measured_external_test_conditions_v001.csv
+  assignment_sha256: b44fe3f11ef7a6c32256e5c04031d89301fb867b93c41c77cd3769c4f084965d
+auxiliary_unseen_speed_protocol:
+  status: FROZEN_AUXILIARY_PROTOCOL
+  purpose: post-selection unseen-SpeedRef robustness test
+  used_for_primary_model_selection: false
+  hyperparameters_must_be_locked_before_use: true
+  heldout_speedrefs:
+  - 1000
+  - 1100
+  - 1300
+  - 1900
+  - 2200
+  - 2500
+  - 2800
+  - 4200
+  - 4400
+  assignment_artifact: results/tables/split_001/aux_unseen_speed_conditions_v001.csv
+  assignment_sha256: 630d6e7c96f4327d5ce025c146fd0d2da04e63508847fc8b36ea76bb39bf82a3
+row_manifests:
+  simulated: data/splits/sim_split_manifest_v001.csv.gz
+  simulated_sha256: c1eb5bbd047c9509130b0b190d7e3ee0d11a9589d3968a08b2d6dfc3bf9f4b80
+  measured: data/splits/measured_external_test_manifest_v001.csv.gz
+  measured_sha256: d04a47c6329627f94033e8a82b388b440440f8da226c16e5e6a9abe3eaf153e7
+preprocessing_fit_policy:
+  scaler_fit_partition: SIM_TRAIN
+  validation_uses_train_fitted_transform: true
+  measured_test_uses_train_fitted_transform: true
+  measured_statistics_used_for_fit: false
+prohibited_split_methods:
+- random_row_split
+- FaultCode_Load_SpeedRef_random_group_split
+- measured_rows_mixed_into_primary_development
+still_unfrozen:
+- exact_physics_guided_feature_formulas
+- final_engineered_feature_set
+- fitted_scaler_parameters
+- evaluation_metrics
+- class_imbalance_treatment
+- conventional_model_families
+- deep_learning_hypothesis
+- model_hyperparameters

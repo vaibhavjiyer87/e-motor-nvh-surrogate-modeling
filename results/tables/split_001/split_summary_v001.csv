@@ -1,0 +1,4 @@
+partition,domain,rows,operating_conditions,used_for_training,used_for_model_selection,protected_external_test
+SIM_TRAIN,simulated,1111135,296,True,True,False
+SIM_VALIDATION,simulated,270459,72,False,True,False
+MEASURED_EXTERNAL_TEST,measured,331078,321,False,False,True

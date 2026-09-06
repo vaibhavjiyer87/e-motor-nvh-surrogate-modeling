@@ -1,0 +1,6 @@
+check,value,expected,pass
+candidate_a_rejected_overlap,357,357,True
+primary_condition_overlap,0,0,True
+sim_condition_total,368,368,True
+measured_outside_sim_support,0,0,True
+measured_rows_protected,331078,331078,True
