@@ -1,0 +1,51 @@
+specification_id: P02-BASE-SELECTION-001
+version: v001
+status: FROZEN
+parent_specifications:
+- P02-SPLIT-001 v001
+- P02-FEAT-001 v001
+- P02-BASE-001 v001
+- P02-BASE-DATA-001 v001
+selection_domain: SIM_VALIDATION_ONLY
+stage_a:
+  task: HEALTHY_vs_FAULT
+  selected_experiment: BASE-A__HIST_GRADIENT_BOOSTING__ENGINEERED_14
+  model_family: HIST_GRADIENT_BOOSTING
+  representation: ENGINEERED_14
+  predictor_count: 14
+  group_macro_f1: 1.0
+  group_balanced_accuracy: 1.0
+  group_mcc: 1.0
+  selection_reason: Perfect primary and secondary metrics; ENGINEERED_14 selected
+    over COMBINED_20 by frozen fewer-predictors tie-break.
+stage_b:
+  task: FAULT_GROUP_1_vs_2_vs_3
+  selected_experiment: BASE-B__HIST_GRADIENT_BOOSTING__RAW_7
+  model_family: HIST_GRADIENT_BOOSTING
+  representation: RAW_7
+  predictor_count: 7
+  group_macro_f1: 1.0
+  group_balanced_accuracy: 1.0
+  selection_reason: All three HistGradientBoosting representations achieved perfect
+    metrics; RAW_7 selected by frozen fewer-predictors tie-break.
+hierarchical_system:
+  labels:
+  - HEALTHY
+  - FAULT_GROUP_1
+  - FAULT_GROUP_2
+  - FAULT_GROUP_3
+  validation_partition: SIM_VALIDATION
+  engineering_groups: 1368
+  group_macro_f1: 1.0
+  group_balanced_accuracy: 1.0
+  group_mcc: 1.0
+  macro_f1_ci_95:
+  - 1.0
+  - 1.0
+further_baseline_hyperparameter_tuning: false
+reason_no_further_baseline_tuning: Frozen leakage-safe simulation validation metrics
+  have reached the performance ceiling.
+measured_external_test_used_for_selection: false
+auxiliary_unseen_speed_used_for_selection: false
+sim_to_real_performance_known: false
+next_evaluation_protocol: AUXILIARY_UNSEEN_SPEEDREF_ROBUSTNESS
