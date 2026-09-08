@@ -1,0 +1,40 @@
+specification_id: P02-TEST-RESULT-001
+version: v001
+status: FROZEN
+parent_execution_protocol: P02-TEST-001 v001
+evaluation_type: ZERO_SHOT_SIM_TO_REAL
+measured_rows: 331078
+engineering_groups: 6086
+stage_a:
+  model: HIST_GRADIENT_BOOSTING
+  representation: ENGINEERED_14
+  macro_f1: 0.48650016874789065
+  balanced_accuracy: 0.5
+  mcc: 0.0
+  auroc: 0.5098606052722857
+  ci_low: 0.4864864864864865
+  ci_high: 0.4865277071682766
+  failure_mode: ALL_GROUPS_PREDICTED_FAULT
+  healthy_groups: 320
+  fault_groups: 5766
+  healthy_recall: 0.0
+stage_b:
+  model: HIST_GRADIENT_BOOSTING
+  representation: RAW_7
+  macro_f1: 0.9861273042189372
+  balanced_accuracy: 0.9861255636489767
+  ci_low: 0.9788598402979986
+  ci_high: 0.9922200659448382
+hierarchical_system:
+  macro_f1: 0.7197964138345002
+  balanced_accuracy: 0.7395941727367326
+  mcc: 0.9068047571656161
+  ci_low: 0.7144602086615989
+  ci_high: 0.7242919912941577
+primary_domain_gap_finding: Zero-shot transfer failure is concentrated in Stage-A
+  healthy-versus-fault detection. Fault-group localization transfers strongly.
+model_refit_before_test: false
+measured_scaler_fitted: false
+model_selection_changed: false
+result_may_modify_locked_baseline: false
+post_test_model_development_status: DECISION_GATE_REQUIRED
