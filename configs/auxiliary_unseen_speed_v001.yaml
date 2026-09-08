@@ -1,0 +1,50 @@
+specification_id: P02-AUX-001
+version: v001
+status: FROZEN
+parent_baseline_selection: P02-BASE-SELECTION-001 v001
+purpose: Measure robustness of the already-selected baseline architecture to completely
+  unseen SpeedRef values within the simulated domain.
+selection_role: ROBUSTNESS_ONLY
+may_change_primary_architecture: false
+heldout_speedrefs:
+- 1000
+- 1100
+- 1300
+- 1900
+- 2200
+- 2500
+- 2800
+- 4200
+- 4400
+training_protocol: Retrain the already-selected model recipes fresh on AUX_TRAIN excluding
+  all held-out SpeedRef values.
+test_protocol: One-shot evaluation on all rows belonging to the nine held-out SpeedRef
+  values.
+stage_a:
+  model_family: HIST_GRADIENT_BOOSTING
+  representation: ENGINEERED_14
+  macro_f1: 1.0
+  balanced_accuracy: 1.0
+  mcc: 1.0
+  ci_low: 1.0
+  ci_high: 1.0
+stage_b:
+  model_family: HIST_GRADIENT_BOOSTING
+  representation: RAW_7
+  macro_f1: 1.0
+  balanced_accuracy: 1.0
+  ci_low: 1.0
+  ci_high: 1.0
+hierarchical_system:
+  group_count: 1368
+  macro_f1: 1.0
+  balanced_accuracy: 1.0
+  mcc: 1.0
+  ci_low: 1.0
+  ci_high: 1.0
+primary_architecture_changed: false
+simulation_robustness_conclusion: No degradation observed under complete SpeedRef
+  holdout for the selected baseline architecture.
+measured_external_test_used: false
+sim_to_real_performance_known: false
+next_protocol: TEST-001_MEASURED_EXTERNAL_TEST_ZERO_SHOT
