@@ -1,0 +1,66 @@
+specification_id: P02-DL-001
+version: v001
+status: FROZEN
+experiment_role: CONTROLLED_NEURAL_STAGE_A_BASELINE
+hypothesis: Holding the successful ENGINEERED_14 predictor representation fixed, a
+  compact multilayer perceptron may learn a smoother HEALTHY-vs-FAULT decision boundary
+  than the selected HistGradientBoosting baseline.
+task: STAGE_A_HEALTHY_VS_FAULT
+development_domain: SIMULATION_ONLY
+training_partition: SIM_TRAIN
+selection_partition: SIM_VALIDATION
+input_representation: ENGINEERED_14
+input_dimension: 14
+scaling:
+  type: STANDARD_SCALER
+  artifact_source: P02-BASE-DATA-001 v001
+  fit_scope: SIM_TRAIN_ONLY
+  refit_for_dl001: false
+architecture:
+  family: MLP
+  hidden_dimensions:
+  - 64
+  - 32
+  - 16
+  activation: RELU
+  normalization: LAYERNORM
+  dropout: 0.1
+  output_classes: 2
+training:
+  optimizer: ADAMW
+  learning_rate: 0.001
+  weight_decay: 0.0001
+  loss: WEIGHTED_CROSS_ENTROPY
+  sample_weight_policy: FROZEN_STAGE_A_GROUP_CLASS_BALANCED_WEIGHTS
+  gradient_clip_norm: 5.0
+  max_epochs: 30
+  early_stopping_patience: 6
+  scheduler: REDUCE_LR_ON_PLATEAU
+  scheduler_factor: 0.5
+  scheduler_patience: 2
+  minimum_learning_rate: 1.0e-05
+  gpu_batch_size: 8192
+  cpu_batch_size: 4096
+  seed: 20260914
+selection:
+  evaluation_unit: FaultCode x Load x SpeedRef
+  primary_metric: GROUP_MACRO_F1
+  secondary_metric_1: GROUP_BALANCED_ACCURACY
+  secondary_metric_2: GROUP_MCC
+  epoch_tie_break: EARLIER_EPOCH
+  probability_aggregation: MEAN_WITHIN_GROUP
+  decision_rule: ARGMAX_MEAN_PROBABILITY
+measured_domain_policy:
+  training_use: false
+  early_stopping_use: false
+  hyperparameter_use: false
+  feature_selection_use: false
+  model_selection_use: false
+  test001_already_observed: true
+  future_dl001_measured_result_role: POST_TEST_EXPLORATORY_BENCHMARK_ONLY
+crash_safety:
+  checkpoint_every_epoch: true
+  resume_from_last_complete_epoch: true
+  best_checkpoint_persisted: true
+  history_persisted_every_epoch: true
+specification_fingerprint: 005d15a0f6bf32aae39437cb5b14fa94451f9420277a1822d266ed4b57ed19ef
