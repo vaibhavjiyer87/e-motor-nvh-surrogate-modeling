@@ -1,0 +1,64 @@
+specification_id: P02-APP-MODEL-001
+version: v001
+status: FROZEN
+qualification_status: ENGINEERING_DEMO_ACCEPTED_WITH_LIMITATIONS
+production_qualified: false
+formal_app001_acceptance: false
+formal_app001_failure_reason: Stage-A held-out Macro F1 = 0.7246, below frozen minimum
+  0.80.
+architecture: HIERARCHICAL_HYBRID
+stage_a:
+  task: HEALTHY_VS_FAULT
+  model: MLP
+  representation: ENGINEERED_14
+  source_experiment: P02-DL-001
+  best_epoch: 3
+  checkpoint: models/dl_001/stage_a_mlp_engineered14_v001/best_checkpoint.pt
+  checkpoint_sha256: f2280473be790feed85de15e3e496ebe3afd79997c881be944f4987b0fe068d7
+  decision_threshold: 0.9994503855705261
+  threshold_source: P02-APP-STAGEA-CAL-001 v001
+  heldout_metrics:
+    macro_f1: 0.7246
+    balanced_accuracy: 0.9023
+    healthy_recall: 0.8984
+    fault_recall: 0.9062
+stage_b:
+  task: FAULT_GROUP_LOCALIZATION
+  model: HIST_GRADIENT_BOOSTING
+  representation: RAW_7
+  source_experiment: BASE-B__HIST_GRADIENT_BOOSTING__RAW_7
+  model_artifact: models/base_003/BASE-B__HIST_GRADIENT_BOOSTING__RAW_7/model_bundle_v001.joblib
+  model_sha256: 1dae31e3e6807e17c93fba79cb61fe4465a4f19c9f620f5d7810bfa71ce04412
+  heldout_metrics:
+    macro_f1: 0.9844
+    balanced_accuracy: 0.9844
+hierarchical_system:
+  heldout_macro_f1: 0.836
+  heldout_balanced_accuracy: 0.9043
+  heldout_mcc: 0.8754
+known_strengths:
+- Stage-B fault-group localization transfers very strongly from simulation to measurement.
+- Stage-A MLP preserves strong measured-domain ranking ability despite severe probability
+  shift.
+- Measured threshold calibration substantially recovers HEALTHY and FAULT recall.
+- Unseen-SpeedRef simulation robustness reached perfect hierarchical performance.
+known_limitations:
+- Stage-A held-out Macro F1 did not meet the predefined 0.80 deployment-acceptance
+  criterion.
+- Stage-A requires measured-domain threshold calibration; the simulation-derived 0.5
+  threshold does not transfer.
+- Measured-domain deployment development occurred after TEST-001 had already exposed
+  the full measured dataset.
+- Model validation is limited to the public PMSM dataset used in P02.
+- Fault groups are retained as GROUP_1/GROUP_2/GROUP_3 rather than asserted physical
+  U/V/W phase names.
+- Fault severity is not predicted.
+- Inputs are RMS-domain features plus speed, not raw time-domain waveforms.
+intended_use: Portfolio engineering demonstration and diagnostic-support prototype.
+not_intended_for: Safety-critical production decisions without additional independent
+  validation.
+further_model_search: false
+cnn_selected: false
+cnn_reason: No natural convolutional representation was established for the frozen
+  tabular RMS inputs.
+next_phase: APPLICATION_PACKAGING
