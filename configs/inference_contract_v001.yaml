@@ -1,0 +1,106 @@
+specification_id: P02-APP-INFERENCE-001
+version: v001
+status: FROZEN
+parent_application_model: P02-APP-MODEL-001 v001
+qualification_status: ENGINEERING_DEMO_ACCEPTED_WITH_LIMITATIONS
+input:
+  interface_type: TABULAR_BATCH
+  preferred_file_format: CSV
+  semantic_unit: ONE_OPERATING_CAPTURE
+  required_columns:
+  - Currents_Sub1[1].rms
+  - Currents_Sub1[2].rms
+  - Currents_Sub1[3].rms
+  - Currents_Sub2[1].rms
+  - Currents_Sub2[2].rms
+  - Currents_Sub2[3].rms
+  - Speed_mech
+  column_order_required: false
+  extra_columns_policy: IGNORE_WITH_WARNING
+  missing_columns_policy: REJECT
+  duplicate_required_columns_policy: REJECT
+  data_type: NUMERIC
+  nonfinite_values_policy: REJECT
+  current_rms_negative_values_policy: REJECT
+  single_row_policy: TECHNICALLY_SUPPORTED_BUT_NOT_VALIDATED_AS_PRIMARY_ENGINEERING_GROUP_MODE
+  validated_inference_granularity: MULTI_ROW_ENGINEERING_GROUP
+  mixed_operating_capture_policy: NOT_SUPPORTED_USER_MUST_SUPPLY_ONE_OPERATING_CAPTURE_PER_INFERENCE
+  load_required: false
+  speedref_required: false
+  faultcode_required: false
+  labels_required: false
+preprocessing:
+  raw_representation: RAW_7
+  stage_a_representation: ENGINEERED_14
+  feature_builder: src/features.py
+  stage_a_scaler: FROZEN_SIM_TRAIN_STANDARD_SCALER
+  stage_a_scaler_refit_allowed: false
+  runtime_feature_fitting_allowed: false
+  runtime_calibration_allowed: false
+stage_a:
+  task: HEALTHY_VS_FAULT
+  model: MLP
+  representation: ENGINEERED_14
+  best_epoch: 3
+  row_output: SOFTMAX_FAULT_SCORE
+  group_aggregation: MEAN_ROW_FAULT_SCORE
+  decision_threshold: 0.9994503855705261
+  decision_rule: FAULT_IF_MEAN_FAULT_SCORE_GREATER_THAN_OR_EQUAL_TO_THRESHOLD
+  score_display_name: Fault score
+  score_must_not_be_labeled:
+  - confidence
+  - calibrated probability
+  - probability of fault
+  score_explanation: Mean neural-network FAULT score across the input batch. The score
+    is used with the measured-domain calibrated threshold and must not be interpreted
+    as a calibrated failure probability.
+stage_b:
+  execution_condition: RUN_ONLY_IF_STAGE_A_EQUALS_FAULT
+  task: FAULT_GROUP_LOCALIZATION
+  model: HIST_GRADIENT_BOOSTING
+  representation: RAW_7
+  row_output: CLASS_PROBABILITIES
+  group_aggregation: MEAN_CLASS_PROBABILITY
+  decision_rule: ARGMAX_MEAN_CLASS_PROBABILITY
+  labels:
+  - FAULT_GROUP_1
+  - FAULT_GROUP_2
+  - FAULT_GROUP_3
+  physical_phase_mapping_claimed: false
+hierarchical_logic:
+  if_stage_a_healthy: HEALTHY
+  if_stage_a_fault: STAGE_B_PREDICTED_FAULT_GROUP
+output:
+  required_fields:
+  - diagnostic_status
+  - fault_group
+  - fault_score
+  - stage_a_threshold
+  - rows_processed
+  - model_version
+  - qualification_status
+  - warnings
+  diagnostic_status_values:
+  - HEALTHY
+  - FAULT
+  fault_group_if_healthy: null
+  fault_group_if_fault:
+  - FAULT_GROUP_1
+  - FAULT_GROUP_2
+  - FAULT_GROUP_3
+  show_stage_b_scores: true
+  show_model_qualification: true
+  show_about_model_button: true
+model_card:
+  source: reports/application_model_card_v001.md
+  ui_label: About This Model
+  must_be_accessible_from_main_result_screen: true
+user_messaging:
+  qualification_label: Engineering demonstration
+  production_qualified: false
+  required_disclaimer: This model is an engineering demonstration and is not validated
+    for safety-critical or production diagnostic decisions.
+runtime_model_training: false
+runtime_threshold_tuning: false
+runtime_scaler_fitting: false
+internet_required_for_inference: false
