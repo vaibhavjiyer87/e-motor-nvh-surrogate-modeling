@@ -1,0 +1,56 @@
+specification_id: P02-APP-001
+version: v001
+status: FROZEN
+purpose: Select and validate the simplest defensible deployment-oriented hybrid model
+  using a measured-domain Stage-A calibration split.
+development_status: POST_TEST_DEPLOYMENT_DEVELOPMENT
+stage_a_candidate:
+  model: MLP
+  representation: ENGINEERED_14
+  source_model: P02-DL-001
+  weights: FROZEN
+  retraining: false
+  calibration_target: GROUP_LEVEL_DECISION_THRESHOLD_ONLY
+stage_b_candidate:
+  model: HIST_GRADIENT_BOOSTING
+  representation: RAW_7
+  source_model: P02-BASE-SELECTION-001
+  weights: FROZEN
+  retraining: false
+  calibration: NONE
+measured_split:
+  unit: Load x SpeedRef
+  calibration_fraction: 0.6
+  evaluation_fraction: 0.4
+  stratification: INDEPENDENT_WITHIN_LOAD
+  seed: 20260915
+  faultcodes_kept_together: true
+  row_random_split: false
+stage_a_threshold_selection:
+  population: APP_CALIBRATION_ONLY
+  aggregation_unit: FaultCode x Load x SpeedRef
+  score: MEAN_ROW_FAULT_PROBABILITY
+  primary_metric: MACRO_F1
+  tie_break_1: BALANCED_ACCURACY
+  tie_break_2: FAULT_RECALL
+  tie_break_3: LOWER_THRESHOLD
+  measured_model_refit: false
+  neural_weight_update: false
+heldout_app_evaluation:
+  population: APP_EVALUATION
+  threshold_tuning_allowed: false
+  model_tuning_allowed: false
+  primary_stage_a_metric: MACRO_F1
+  acceptance_criteria:
+    stage_a_macro_f1_min: 0.8
+    stage_a_balanced_accuracy_min: 0.8
+    healthy_recall_min: 0.7
+    fault_recall_min: 0.9
+decision_if_pass: Freeze hybrid MLP Stage-A plus HistGB Stage-B as application model
+  and proceed to packaging.
+decision_if_fail: Reject simple threshold calibration. Do not tune on APP_EVALUATION.
+  Define a new calibration or domain-shift experiment before further modeling.
+cnn_status: NOT_JUSTIFIED
+cnn_reason: Frozen model-ready inputs are tabular RMS features without trustworthy
+  temporal ordering.
+model_card_required: true
